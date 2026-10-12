@@ -605,7 +605,7 @@ export default function HomePage() {
                 </p>
 
                 <a
-                  href="mailto:your-email@example.com?subject=Project%20Enquiry"
+                  href="mailto:taheritawa76@gmail.com"
                   className="group mt-8 inline-flex items-center gap-3 rounded-full bg-neutral-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#b88b4a]"
                 >
                   <Mail size={17} />
