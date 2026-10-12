@@ -39,7 +39,7 @@ const projects = [
       "A gold-focused mobile experience designed to make pricing, account access, and gold-related services easier to navigate.",
     image: "/projects/ayar-gold.png",
     technologies: ["React Native", "TypeScript", "API Integration"],
-    href: "https://apps.apple.com/app/id6756250412",
+    href: "https://ayar24.co/",
     accent: "from-amber-100/80 to-orange-50",
   },
   {
@@ -50,7 +50,7 @@ const projects = [
       "A mobile eSIM experience that helps travelers explore connectivity options and manage their digital travel needs.",
     image: "/projects/tellgo.png",
     technologies: ["React Native", "REST APIs", "Mobile UI"],
-    href: "https://apps.apple.com/app/id6502844225",
+    href: "https://webapp.tellgo.org/",
     accent: "from-sky-100/80 to-indigo-50",
   },
   {
@@ -61,7 +61,7 @@ const projects = [
       "A modern shopping experience with product discovery, category navigation, cart functionality, and checkout flows.",
     image: "/projects/hs-store.png",
     technologies: ["Next.js", "React", "Tailwind CSS"],
-    href: "#contact",
+    href: "https://hsstore.com/",
     accent: "from-yellow-100/80 to-amber-50",
   },
   {
@@ -72,7 +72,7 @@ const projects = [
       "A customer and provider-focused experience built around product browsing, order journeys, and delivery workflows.",
     image: "/projects/clapper.png",
     technologies: ["React Native", "API Integration", "UI/UX"],
-    href: "https://apps.apple.com/app/id6777646646",
+    href: "https://apps.apple.com/us/app/saree-express/id6777646646",
     accent: "from-rose-100/80 to-pink-50",
   },
   {
@@ -83,7 +83,7 @@ const projects = [
       "A chatbot-oriented project focused on making digital interactions more accessible through conversational interfaces.",
     image: "/projects/kfg.png",
     technologies: ["React", "AI Integration", "APIs"],
-    href: "#contact",
+    href: "https://apps.apple.com/us/app/kout-gpt/id6790105375",
     accent: "from-violet-100/80 to-fuchsia-50",
   },
 ];
@@ -176,10 +176,10 @@ export default function HomePage() {
 
           <a
             href="#contact"
-            className="hidden items-center gap-2 rounded-full bg-neutral-900 px-5 py-3 text-xs font-semibold text-white transition hover:bg-[#b88b4a] md:inline-flex"
+            className="hidden items-center gap-2 rounded-full bg-neutral-900 px-5 py-3 text-xs font-semibold text-yellow-400 transition hover:bg-[#b88b4a] md:inline-flex"
           >
-            Let&apos;s talk
-            <ArrowUpRight size={15} />
+            <h3 className="text-white">Let&apos;s talk</h3>
+            <ArrowUpRight size={15} color="#fff" />
           </a>
 
           <button
@@ -272,9 +272,10 @@ export default function HomePage() {
                 href="#projects"
                 className="group inline-flex items-center gap-3 rounded-full bg-neutral-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#b88b4a]"
               >
-                Explore my work
+                <h1 className="text-white">Explore my work</h1>
                 <ArrowDownRight
                   size={17}
+                  color="white"
                   className="transition-transform group-hover:translate-x-1 group-hover:translate-y-1"
                 />
               </a>
@@ -308,10 +309,7 @@ export default function HomePage() {
 
           <div className="relative mx-auto w-full max-w-[560px] py-8 md:py-0">
             <FloatingProjectCards />
-            <div className="mt-1 flex items-center justify-center gap-2 text-[10px] font-medium uppercase tracking-[0.18em] text-neutral-400">
-              <Sparkles size={13} className="text-[#b88b4a]" />
-              A little look at what I create
-            </div>
+           
           </div>
 
           <a
@@ -367,12 +365,12 @@ export default function HomePage() {
                   className={`relative m-3 aspect-[1.3/1] overflow-hidden rounded-[19px] bg-gradient-to-br ${project.accent}`}
                 >
                   <Image
-                    src={project.image}
-                    alt={`${project.name} project preview`}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-contain p-5 transition-transform duration-500 group-hover:scale-[1.04]"
-                  />
+  src={project.image}
+  alt={`${project.name} project preview`}
+  fill
+  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+  className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+/>
 
                   <span className="absolute left-3 top-3 rounded-full border border-white/70 bg-white/80 px-3 py-1.5 text-[10px] font-semibold text-neutral-700 backdrop-blur">
                     {project.category}

@@ -15,30 +15,35 @@ const projects = [
     category: "Mobile App",
     image: "/projects/ayar-gold.png",
     position: "left-[1%] top-[20%]",
+    href: "https://ayar24.co/",
   },
   {
     name: "H&S Store",
     category: "E-commerce",
     image: "/projects/hs-store.png",
     position: "right-[1%] top-[20%]",
+    href: "https://hsstore.com/",
   },
   {
     name: "Tellgo",
     category: "Travel Tech",
     image: "/projects/tellgo.png",
     position: "left-[1%] bottom-[13%]",
+    href: "https://webapp.tellgo.org/",
   },
   {
     name: "Saree Express",
     category: "Commerce",
     image: "/projects/clapper.png",
     position: "right-[1%] bottom-[13%]",
+    href: "https://apps.apple.com/us/app/saree-express/id6777646646",
   },
   {
     name: "KFG",
     category: "AI & Chatbot",
     image: "/projects/kfg.png",
     position: "left-1/2 top-[2%] -translate-x-1/2",
+    href: "https://apps.apple.com/us/app/kout-gpt/id6790105375",
   },
 ];
 
@@ -48,13 +53,16 @@ function ProjectCard({
   project: (typeof projects)[number];
 }) {
   return (
-    <article className="min-w-0 rounded-2xl border border-neutral-200 bg-white p-2.5 shadow-sm sm:p-3">
+    <article
+      className="min-w-0 cursor-pointer rounded-2xl border border-neutral-200 bg-white p-2.5 shadow-sm sm:p-3"
+      onClick={() => window.open(project.href, "_blank")}
+    >
       <div className="relative aspect-[1.45/1] overflow-hidden rounded-xl bg-neutral-100">
         <Image
           src={project.image}
           alt={`${project.name} project preview`}
           fill
-          sizes="(max-width: 639px) 45vw, 168px"
+          sizes="(max-width: 939px) 45vw, 220px"
           className="object-cover"
         />
       </div>
