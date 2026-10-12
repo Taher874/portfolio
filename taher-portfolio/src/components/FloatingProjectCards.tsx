@@ -53,17 +53,20 @@ function ProjectCard({
   project: (typeof projects)[number];
 }) {
   return (
-    <article
-      className="min-w-0 cursor-pointer rounded-2xl border border-neutral-200 bg-white p-2.5 shadow-sm sm:p-3"
-      onClick={() => window.open(project.href, "_blank")}
+    <a
+      href={project.href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`View ${project.name} project (opens in a new tab)`}
+      className="group block min-w-0 rounded-2xl border border-neutral-200 bg-white p-2.5 text-left shadow-sm transition hover:-translate-y-1 hover:border-[#d8c29e] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b7135] sm:p-3"
     >
       <div className="relative aspect-[1.45/1] overflow-hidden rounded-xl bg-neutral-100">
         <Image
           src={project.image}
           alt={`${project.name} project preview`}
           fill
-          sizes="(max-width: 939px) 45vw, 220px"
-          className="object-cover"
+          sizes="(max-width: 639px) 72vw, 220px"
+          className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
       </div>
 
@@ -78,7 +81,7 @@ function ProjectCard({
         </div>
         <ArrowUpRight size={15} className="shrink-0 text-[#a47b3f]" />
       </div>
-    </article>
+    </a>
   );
 }
 
@@ -87,28 +90,37 @@ export default function FloatingProjectCards() {
 
   useGSAP(
     () => {
-      const cards = gsap.utils.toArray<HTMLElement>(
-        ".desktop-project-card",
+      const media = gsap.matchMedia();
+
+      media.add(
+        "(min-width: 640px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          const cards = gsap.utils.toArray<HTMLElement>(
+            ".desktop-project-card",
+          );
+
+          cards.forEach((card, index) => {
+            gsap.to(card, {
+              y: index % 2 === 0 ? -9 : 9,
+              duration: 2.5 + index * 0.2,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+              delay: index * 0.12,
+            });
+          });
+
+          gsap.from(".orbit-ring", {
+            scale: 0.9,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power2.out",
+          });
+        },
       );
 
-      cards.forEach((card, index) => {
-        gsap.to(card, {
-          y: index % 2 === 0 ? -9 : 9,
-          duration: 2.5 + index * 0.2,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          delay: index * 0.12,
-        });
-      });
-
-      gsap.from(".orbit-ring", {
-        scale: 0.9,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: "power2.out",
-      });
+      return () => media.revert();
     },
     { scope: container },
   );
@@ -147,20 +159,24 @@ export default function FloatingProjectCards() {
       </div>
 
       {/* Mobile and small tablet layout */}
-      <div className="grid grid-cols-2 gap-3 sm:hidden">
+      <div
+        className="mobile-project-strip flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 sm:hidden"
+        aria-label="Featured projects. Swipe horizontally to explore."
+      >
         {projects.map((project) => (
           <div
             key={project.name}
-            className={project.name === "KFG" ? "col-span-2 mx-auto w-[calc(50%-6px)]" : ""}
+            className="mobile-project-card w-[72vw] max-w-[270px] shrink-0 snap-start"
           >
             <ProjectCard project={project} />
           </div>
         ))}
       </div>
 
-      <p className="mt-5 flex items-center justify-center gap-2 text-center text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-400">
+      <p className="mt-4 flex items-center justify-center gap-2 text-center text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-400 sm:mt-5">
         <Sparkles size={13} className="text-[#b88b4a]" />
-        A little look at what I create
+        <span className="sm:hidden">Swipe to explore selected work</span>
+        <span className="hidden sm:inline">A little look at what I create</span>
       </p>
     </div>
   );

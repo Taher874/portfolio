@@ -1,7 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import {
   ArrowDown,
   ArrowDownRight,
@@ -16,10 +19,11 @@ import {
   Menu,
   MessageCircle,
   Smartphone,
-  Sparkles,
   X,
 } from "lucide-react";
 import FloatingProjectCards from "@/components/FloatingProjectCards";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const navigation = [
   { label: "Home", href: "#home" },
@@ -139,11 +143,94 @@ const technologies = [
   "Expo",
 ];
 
+const heroHighlights = [
+  { value: "Mobile", label: "iOS & Android experiences" },
+  { value: "Web", label: "Modern product interfaces" },
+  { value: "Backend", label: "Reliable systems & APIs" },
+];
+
 export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const page = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const media = gsap.matchMedia();
+
+      media.add(
+        "(prefers-reduced-motion: no-preference)",
+        () => {
+          gsap.utils
+            .toArray<HTMLElement>("[data-scroll-reveal]")
+            .forEach((element) => {
+              const items = element.querySelectorAll<HTMLElement>(
+                "[data-scroll-item]",
+              );
+              const targets = items.length > 0 ? items : [element];
+
+              gsap.fromTo(
+                targets,
+                { autoAlpha: 0, y: 24 },
+                {
+                  autoAlpha: 1,
+                  y: 0,
+                  duration: 0.65,
+                  stagger: items.length > 0 ? 0.1 : 0,
+                  ease: "power2.out",
+                  scrollTrigger: {
+                    trigger: element,
+                    start: "top 88%",
+                    toggleActions: "play none none reverse",
+                  },
+                },
+              );
+            });
+
+          const mobile = gsap.matchMedia();
+
+          mobile.add("(max-width: 767px)", () => {
+            gsap.fromTo(
+              ".mobile-hero-copy > *",
+              { autoAlpha: 0, y: 18 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.65,
+                stagger: 0.08,
+                ease: "power2.out",
+                clearProps: "all",
+              },
+            );
+
+            gsap.fromTo(
+              ".mobile-project-card",
+              { autoAlpha: 0, x: 22 },
+              {
+                autoAlpha: 1,
+                x: 0,
+                duration: 0.55,
+                stagger: 0.08,
+                delay: 0.25,
+                ease: "power2.out",
+                clearProps: "all",
+              },
+            );
+          });
+
+          return () => mobile.revert();
+        },
+      );
+
+      return () => media.revert();
+    },
+    { scope: page },
+  );
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#faf9f6] text-neutral-900">
+    <main
+      ref={page}
+      className="min-h-screen overflow-hidden bg-[#faf9f6] text-neutral-900"
+    >
       {/* Navigation */}
       <header className="sticky top-0 z-50 border-b border-neutral-200/80 bg-[#faf9f6]/90 backdrop-blur-xl">
         <div className="section-shell flex h-[72px] items-center justify-between">
@@ -177,7 +264,7 @@ export default function HomePage() {
             href="#contact"
             className="hidden items-center gap-2 rounded-full bg-neutral-900 px-5 py-3 text-xs font-semibold text-yellow-400 transition hover:bg-[#b88b4a] md:inline-flex"
           >
-            <h3 className="text-white">Let&apos;s talk</h3>
+            <span className="text-white">Let&apos;s talk</span>
             <ArrowUpRight size={15} color="#fff" />
           </a>
 
@@ -219,13 +306,13 @@ export default function HomePage() {
       </header>
 
       {/* Hero */}
-      <section id="home" className="relative scroll-mt-24">
+      <section id="home" className="relative min-w-0 scroll-mt-24">
         <div className="pointer-events-none absolute -right-36 top-10 size-[440px] rounded-full bg-[#e8d6b7]/20 blur-[100px]" />
         <div className="pointer-events-none absolute -left-44 top-56 size-[380px] rounded-full bg-[#dce7ef]/35 blur-[110px]" />
 
-        <div className="section-shell relative grid min-h-[calc(100svh-72px)] items-center gap-8 py-16 md:grid-cols-[1.05fr_0.95fr] md:py-20 lg:gap-4">
-          <div className="relative z-20">
-            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/80 px-4 py-2 shadow-sm">
+        <div className="section-shell relative grid min-w-0 grid-cols-[minmax(0,1fr)] items-center gap-8 py-12 sm:py-16 md:grid-cols-[1.05fr_0.95fr] md:py-20 lg:gap-4">
+          <div className="mobile-hero-copy relative z-20 min-w-0">
+            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/80 px-4 py-2 shadow-sm shadow-neutral-200/60">
               <span className="relative flex size-2">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-50" />
                 <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
@@ -237,10 +324,10 @@ export default function HomePage() {
 
             <p className="section-label mb-5">Hello, I&apos;m Taher</p>
 
-            <h1 className="text-balance max-w-[720px] text-[clamp(3rem,7.5vw,6.3rem)] font-semibold leading-[0.98] tracking-[-0.075em]">
+            <h1 className="max-w-full text-balance text-[clamp(2.55rem,11vw,6.3rem)] font-semibold leading-[0.96] tracking-[-0.075em] text-neutral-950">
               I build
               <br />
-              <span className="relative inline-block">
+              <span className="relative inline-block max-w-full">
                 digital products
                 <svg
                   viewBox="0 0 440 18"
@@ -257,21 +344,21 @@ export default function HomePage() {
                 </svg>
               </span>
               <br />
-              <span className="text-neutral-400">that matter.</span>
+              <span className="text-neutral-500">that matter.</span>
             </h1>
 
-            <p className="mt-8 max-w-[500px] text-sm leading-7 text-neutral-600 sm:text-base sm:leading-8">
+            <p className="mt-6 max-w-[500px] text-sm leading-7 text-neutral-600 sm:mt-8 sm:text-base sm:leading-8">
               I&apos;m a full-stack developer focused on mobile apps, web
               platforms, and backend systems. I turn ideas into polished,
               practical products that people enjoy using.
             </p>
 
-            <div className="mt-9 flex flex-wrap items-center gap-3">
+            <div className="mt-7 flex flex-col items-stretch gap-3 min-[420px]:flex-row min-[420px]:items-center sm:mt-9">
               <a
                 href="#projects"
-                className="group inline-flex items-center gap-3 rounded-full bg-neutral-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#b88b4a]"
+                className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-neutral-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#b88b4a]"
               >
-                <h1 className="text-white">Explore my work</h1>
+                <span className="text-white">Explore my work</span>
                 <ArrowDownRight
                   size={17}
                   color="white"
@@ -281,34 +368,24 @@ export default function HomePage() {
 
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white/70 px-6 py-4 text-sm font-semibold text-neutral-800 transition hover:border-neutral-900"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-neutral-300 bg-white/70 px-6 py-4 text-sm font-semibold text-neutral-800 transition hover:border-neutral-900 hover:bg-white"
               >
                 <Mail size={16} />
                 Contact me
               </a>
             </div>
 
-            <div className="mt-12 flex flex-wrap gap-x-7 gap-y-4 border-t border-neutral-200 pt-7">
-              <div>
-                <p className="text-xl font-semibold tracking-tight">Mobile</p>
-                <p className="mt-1 text-xs text-neutral-500">iOS & Android</p>
-              </div>
-              <div className="h-10 w-px bg-neutral-200" />
-              <div>
-                <p className="text-xl font-semibold tracking-tight">Web</p>
-                <p className="mt-1 text-xs text-neutral-500">
-                  Modern interfaces
-                </p>
-              </div>
-              <div className="h-10 w-px bg-neutral-200" />
-              <div>
-                <p className="text-xl font-semibold tracking-tight">Backend</p>
-                <p className="mt-1 text-xs text-neutral-500">APIs & services</p>
-              </div>
+            <div className="mt-8 grid grid-cols-3 gap-3 border-t border-neutral-200 pt-6 sm:mt-12 sm:gap-7 sm:pt-7">
+              {heroHighlights.map((item) => (
+                <div key={item.value}>
+                  <p className="text-base font-semibold tracking-tight sm:text-xl">{item.value}</p>
+                  <p className="mt-1 text-[10px] leading-4 text-neutral-500 sm:text-xs">{item.label}</p>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-[560px] py-8 md:py-0">
+          <div className="relative mx-auto min-w-0 w-full max-w-[560px] py-1 md:py-0">
             <FloatingProjectCards />
           </div>
 
@@ -340,8 +417,8 @@ export default function HomePage() {
       </div>
 
       {/* Projects */}
-      <section id="projects" className="scroll-mt-24 py-24 sm:py-32">
-        <div className="section-shell">
+      <section id="projects" className="scroll-mt-24 py-16 sm:py-32">
+        <div className="section-shell" data-scroll-reveal>
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
               <p className="section-label">Selected work</p>
@@ -355,12 +432,12 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:mt-12 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
               <article
-                onClick={() => window.open(project.href, "_blank")}
                 key={project.number}
-                className="group overflow-hidden rounded-[26px] border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)]"
+                data-scroll-item
+                className="group min-w-0 overflow-hidden rounded-[22px] border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] sm:rounded-[26px]"
               >
                 <div
                   className={`relative m-3 aspect-[1.3/1] overflow-hidden rounded-[19px] bg-gradient-to-br ${project.accent}`}
@@ -392,7 +469,7 @@ export default function HomePage() {
                   </a>
                 </div>
 
-                <div className="px-5 pb-5 pt-2">
+                <div className="px-4 pb-4 pt-2 sm:px-5 sm:pb-5">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="mb-2 font-mono text-[10px] text-neutral-400">
@@ -445,9 +522,9 @@ export default function HomePage() {
       {/* Services */}
       <section
         id="services"
-        className="scroll-mt-24 border-y border-neutral-200 bg-white py-24 sm:py-32"
+        className="scroll-mt-24 border-y border-neutral-200 bg-white py-16 sm:py-32"
       >
-        <div className="section-shell">
+        <div className="section-shell" data-scroll-reveal>
           <p className="section-label">What I do</p>
           <div className="mt-5 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <h2 className="max-w-[650px] text-4xl font-semibold tracking-[-0.06em] sm:text-6xl">
@@ -459,14 +536,15 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-14 grid gap-x-10 sm:grid-cols-2">
+          <div className="mt-10 grid gap-x-10 sm:mt-14 sm:grid-cols-2">
             {services.map((service) => {
               const Icon = service.icon;
 
               return (
                 <article
                   key={service.number}
-                  className="group border-t border-neutral-200 py-8 sm:py-10"
+                  data-scroll-item
+                  className="group border-t border-neutral-200 py-7 sm:py-10"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex size-12 items-center justify-center rounded-2xl border border-neutral-200 bg-[#faf9f6] text-neutral-700 transition group-hover:border-[#e4d3b5] group-hover:bg-[#f5eddf] group-hover:text-[#9b7135]">
@@ -502,8 +580,11 @@ export default function HomePage() {
       </section>
 
       {/* About */}
-      <section id="about" className="scroll-mt-24 py-24 sm:py-32">
-        <div className="section-shell grid gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-20">
+      <section id="about" className="scroll-mt-24 py-16 sm:py-32">
+        <div
+          className="section-shell grid gap-8 md:grid-cols-[0.8fr_1.2fr] md:gap-20"
+          data-scroll-reveal
+        >
           <div>
             <p className="section-label">A little about me</p>
             <h2 className="mt-5 text-4xl font-semibold tracking-[-0.06em] sm:text-5xl">
@@ -560,8 +641,8 @@ export default function HomePage() {
       </section>
 
       {/* Technology stack */}
-      <section className="border-y border-neutral-200 bg-[#f3f1ec] py-20 sm:py-24">
-        <div className="section-shell">
+      <section className="border-y border-neutral-200 bg-[#f3f1ec] py-14 sm:py-24">
+        <div className="section-shell" data-scroll-reveal>
           <div className="text-center">
             <p className="section-label">My toolkit</p>
             <h2 className="mt-5 text-3xl font-semibold tracking-[-0.05em] sm:text-5xl">
@@ -577,7 +658,8 @@ export default function HomePage() {
             {technologies.map((technology) => (
               <span
                 key={technology}
-                className="rounded-2xl border border-neutral-200 bg-white px-5 py-3 text-sm font-medium text-neutral-700 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-[#d8c29e] hover:text-[#8c6936]"
+                data-scroll-item
+                className="rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-xs font-medium text-neutral-700 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-[#d8c29e] hover:text-[#8c6936] sm:px-5 sm:py-3 sm:text-sm"
               >
                 {technology}
               </span>
@@ -587,11 +669,11 @@ export default function HomePage() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="relative scroll-mt-24 py-24 sm:py-32">
+      <section id="contact" className="relative scroll-mt-24 py-16 sm:py-32">
         <div className="pointer-events-none absolute left-1/2 top-1/2 size-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#eadcc4]/30 blur-[100px]" />
 
-        <div className="section-shell relative">
-          <div className="overflow-hidden rounded-[32px] border border-neutral-200 bg-white p-7 shadow-[0_25px_100px_rgba(0,0,0,0.04)] sm:p-12 lg:p-16">
+        <div className="section-shell relative" data-scroll-reveal>
+          <div className="overflow-hidden rounded-[24px] border border-neutral-200 bg-white p-5 shadow-[0_25px_100px_rgba(0,0,0,0.04)] sm:rounded-[32px] sm:p-12 lg:p-16">
             <div className="grid gap-12 md:grid-cols-[1.2fr_0.8fr] md:items-end">
               <div>
                 <p className="section-label">Have an idea?</p>
@@ -610,7 +692,7 @@ export default function HomePage() {
                 >
                   <Mail size={17} />
 
-                  <h1 className="text-white">Send me an email</h1>
+                  <span className="text-white">Send me an email</span>
                   <ArrowUpRight
                     size={16}
                     className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -620,7 +702,7 @@ export default function HomePage() {
 
               <div className="space-y-4">
                 <a
-                  href="mailto:your-email@example.com"
+                  href="mailto:taheritawa76@gmail.com"
                   className="flex items-center justify-between gap-4 rounded-2xl border border-neutral-200 p-5 transition hover:border-[#d8c29e] hover:bg-[#faf9f6]"
                 >
                   <div className="flex items-center gap-4">
@@ -638,7 +720,7 @@ export default function HomePage() {
                 </a>
 
                 <a
-                  href="https://www.linkedin.com/"
+                  href="https://www.linkedin.com/in/taher-itawa/"
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center justify-between gap-4 rounded-2xl border border-neutral-200 p-5 transition hover:border-[#d8c29e] hover:bg-[#faf9f6]"
@@ -708,8 +790,7 @@ export default function HomePage() {
           </a>
 
           <p className="text-xs text-neutral-500">
-            ©Taher Itawa. Designed and built with
-            care.
+            © Taher Itawa. Designed and built with care.
           </p>
 
           <a
