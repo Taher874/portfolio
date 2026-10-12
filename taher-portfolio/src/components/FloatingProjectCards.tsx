@@ -15,7 +15,7 @@ const projects = [
     category: "Mobile App",
     image: "/projects/ayar-gold.png",
     position: "left-[1%] top-[20%]",
-    href: "https://ayar24.co/",
+    href: "https://apps.apple.com/in/app/ayar-24-%D8%B9%D9%8A%D8%A7%D8%B1-%D9%A2%D9%A4/id6756250412",
   },
   {
     name: "H&S Store",

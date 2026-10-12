@@ -38,7 +38,7 @@ const projects = [
       "A gold-focused mobile experience designed to make pricing, account access, and gold-related services easier to navigate.",
     image: "/projects/ayar-gold.png",
     technologies: ["React Native", "TypeScript", "API Integration"],
-    href: "https://ayar24.co/",
+    href: "https://apps.apple.com/in/app/ayar-24-%D8%B9%D9%8A%D8%A7%D8%B1-%D9%A2%D9%A4/id6756250412",
     accent: "from-amber-100/80 to-orange-50",
   },
   {
