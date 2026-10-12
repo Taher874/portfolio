@@ -1,0 +1,112 @@
+
+@import "tailwindcss";
+
+:root {
+  --background: #faf9f6;
+  --foreground: #171717;
+  --muted: #737373;
+  --accent: #b88b4a;
+  --surface: #ffffff;
+  --border: #e8e5df;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 84px;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #ead9b9;
+  color: #171717;
+}
+
+.section-shell {
+  width: calc(100% - 64px);
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #8c6936;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.section-label::before {
+  width: 22px;
+  height: 1px;
+  flex-shrink: 0;
+  background: var(--accent);
+  content: "";
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@media (max-width: 767px) {
+  .section-shell {
+    width: calc(100% - 40px);
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    scroll-padding-top: 72px;
+  }
+
+  .section-shell {
+    width: calc(100% - 32px);
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
