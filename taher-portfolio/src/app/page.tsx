@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -297,7 +296,9 @@ export default function HomePage() {
               <div className="h-10 w-px bg-neutral-200" />
               <div>
                 <p className="text-xl font-semibold tracking-tight">Web</p>
-                <p className="mt-1 text-xs text-neutral-500">Modern interfaces</p>
+                <p className="mt-1 text-xs text-neutral-500">
+                  Modern interfaces
+                </p>
               </div>
               <div className="h-10 w-px bg-neutral-200" />
               <div>
@@ -309,7 +310,6 @@ export default function HomePage() {
 
           <div className="relative mx-auto w-full max-w-[560px] py-8 md:py-0">
             <FloatingProjectCards />
-           
           </div>
 
           <a
@@ -358,6 +358,7 @@ export default function HomePage() {
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
               <article
+                onClick={() => window.open(project.href, "_blank")}
                 key={project.number}
                 className="group overflow-hidden rounded-[26px] border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)]"
               >
@@ -365,12 +366,12 @@ export default function HomePage() {
                   className={`relative m-3 aspect-[1.3/1] overflow-hidden rounded-[19px] bg-gradient-to-br ${project.accent}`}
                 >
                   <Image
-  src={project.image}
-  alt={`${project.name} project preview`}
-  fill
-  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-  className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-/>
+                    src={project.image}
+                    alt={`${project.name} project preview`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  />
 
                   <span className="absolute left-3 top-3 rounded-full border border-white/70 bg-white/80 px-3 py-1.5 text-[10px] font-semibold text-neutral-700 backdrop-blur">
                     {project.category}
@@ -378,11 +379,11 @@ export default function HomePage() {
 
                   <a
                     href={project.href}
-                    target={project.href.startsWith("http") ? "_blank" : undefined}
+                    target={
+                      project.href.startsWith("http") ? "_blank" : undefined
+                    }
                     rel={
-                      project.href.startsWith("http")
-                        ? "noreferrer"
-                        : undefined
+                      project.href.startsWith("http") ? "noreferrer" : undefined
                     }
                     aria-label={`View ${project.name}`}
                     className="absolute bottom-3 right-3 flex size-10 items-center justify-center rounded-full bg-white text-neutral-900 shadow-sm transition hover:bg-neutral-900 hover:text-white"
@@ -453,8 +454,8 @@ export default function HomePage() {
               From the first idea to the final build.
             </h2>
             <p className="max-w-[330px] text-sm leading-7 text-neutral-600">
-              One development partner for the interface, application logic,
-              and the services behind your product.
+              One development partner for the interface, application logic, and
+              the services behind your product.
             </p>
           </div>
 
@@ -527,9 +528,8 @@ export default function HomePage() {
           <div className="space-y-5 text-sm leading-8 text-neutral-600 sm:text-base sm:leading-8">
             <p>
               I&apos;m Taher Itawa, a developer who enjoys bringing products to
-              life across mobile and web. I work across the stack, from
-              building interfaces to connecting APIs and implementing
-              application logic.
+              life across mobile and web. I work across the stack, from building
+              interfaces to connecting APIs and implementing application logic.
             </p>
 
             <p>
@@ -599,9 +599,9 @@ export default function HomePage() {
                   Let&apos;s turn your next idea into something real.
                 </h2>
                 <p className="mt-6 max-w-[500px] text-sm leading-7 text-neutral-600 sm:text-base">
-                  Have a mobile app, web platform, or product idea in mind?
-                  Tell me a little about it, and let&apos;s explore what we can
-                  build together.
+                  Have a mobile app, web platform, or product idea in mind? Tell
+                  me a little about it, and let&apos;s explore what we can build
+                  together.
                 </p>
 
                 <a
@@ -609,7 +609,8 @@ export default function HomePage() {
                   className="group mt-8 inline-flex items-center gap-3 rounded-full bg-neutral-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#b88b4a]"
                 >
                   <Mail size={17} />
-                  Send me an email
+
+                  <h1 className="text-white">Send me an email</h1>
                   <ArrowUpRight
                     size={16}
                     className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -627,9 +628,7 @@ export default function HomePage() {
                       <Mail size={19} />
                     </span>
                     <span>
-                      <span className="block text-sm font-semibold">
-                        Email
-                      </span>
+                      <span className="block text-sm font-semibold">Email</span>
                       <span className="mt-1 block text-xs text-neutral-500">
                         Let&apos;s discuss your project
                       </span>
@@ -709,7 +708,8 @@ export default function HomePage() {
           </a>
 
           <p className="text-xs text-neutral-500">
-            © {new Date().getFullYear()} Taher Itawa. Designed and built with care.
+            ©Taher Itawa. Designed and built with
+            care.
           </p>
 
           <a
